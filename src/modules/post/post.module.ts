@@ -12,11 +12,10 @@ import { AuthServices } from '../auth/auth.service';
 import { PostSaveService } from '../postSave/postSave.service';
 import { UserService } from '../user/user.service';
 import { PostController } from './post.controller';
-import { PostRepository } from './post.repository';
 import { PostService } from './post.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Posts, PostRepository, UserEntity, Auth, PostSave])],
+    imports: [TypeOrmModule.forFeature([Posts, UserEntity, Auth, PostSave])],
     providers: [PostService, MessageComponent, UserService, ComponentService, AuthServices, PostSaveService],
     exports: [TypeOrmModule],
     controllers: [PostController],

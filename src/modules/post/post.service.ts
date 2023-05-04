@@ -1,25 +1,24 @@
+import { PostSave } from '@src/entities/post-save.entity';
+import { Posts } from '@src/entities/posts.entity';
 import queryString from 'query-string';
 import { BaseService } from 'src/base/base.service';
 import { iPaginationOption } from 'src/base/pagination.dto';
 import { ErrorCodes } from 'src/constants/error-code.const';
-import { Posts } from '@src/entities/posts.entity';
-import { PostSave } from '@src/entities/post-save.entity';
 import { DatabaseError } from 'src/exceptions/errors/database.error';
 import { LoggerService } from 'src/logger/custom.logger';
-import { InsertResult, QueryFailedError } from 'typeorm';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostDto } from './dto/get-post.dto';
-import { PostRepository } from './post.repository';
 
 @Injectable()
-export class PostService extends BaseService<Posts, PostRepository> {
+export class PostService extends BaseService<Posts, Repository<Posts>> {
     constructor(
         @InjectRepository(Posts)
-        protected readonly repository: PostRepository,
+        protected readonly repository: Repository<Posts>,
         protected readonly logger: LoggerService,
     ) {
         super(repository, logger);

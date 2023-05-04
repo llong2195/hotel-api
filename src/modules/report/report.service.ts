@@ -7,18 +7,17 @@ import { Report } from '@src/entities/report.entity';
 import { UserEntity } from '@src/entities/user.entity';
 import { DatabaseError } from 'src/exceptions/errors/database.error';
 import { LoggerService } from 'src/logger/custom.logger';
-import { InsertResult, QueryFailedError } from 'typeorm';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateReportDto } from './dto/create-report.dto';
 import { GetAllReports } from './dto/get-all.dto';
-import ReportRepository from './report.repository';
 
-export class ReportService extends BaseService<Report, ReportRepository> {
+export class ReportService extends BaseService<Report, Repository<Report>> {
     constructor(
         @InjectRepository(Report)
-        protected readonly repository: ReportRepository,
+        protected readonly repository: Repository<Report>,
         protected readonly logger: LoggerService,
     ) {
         super(repository, logger);

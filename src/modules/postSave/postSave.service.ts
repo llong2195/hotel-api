@@ -3,18 +3,16 @@ import { ErrorCodes } from 'src/constants/error-code.const';
 import { PostSave } from '@src/entities/post-save.entity';
 import { DatabaseError } from 'src/exceptions/errors/database.error';
 import { LoggerService } from 'src/logger/custom.logger';
-import { InsertResult, QueryFailedError } from 'typeorm';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import PostSaveRepository from '../postSave/postSave.repository';
-
 @Injectable()
-export class PostSaveService extends BaseService<PostSave, PostSaveRepository> {
+export class PostSaveService extends BaseService<PostSave, Repository<PostSave>> {
     constructor(
         @InjectRepository(PostSave)
-        protected readonly repository: PostSaveRepository,
+        protected readonly repository: Repository<PostSave>,
         protected readonly logger: LoggerService,
     ) {
         super(repository, logger);

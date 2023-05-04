@@ -1,21 +1,19 @@
-import { BaseService } from 'src/base/base.service';
-import { ErrorCodes } from 'src/constants/error-code.const';
 import { Auth } from '@src/entities/auth.entity';
 import { UserEntity } from '@src/entities/user.entity';
+import { BaseService } from 'src/base/base.service';
+import { ErrorCodes } from 'src/constants/error-code.const';
 import { DatabaseError } from 'src/exceptions/errors/database.error';
 import { LoggerService } from 'src/logger/custom.logger';
-import { InsertResult, QueryFailedError } from 'typeorm';
+import { InsertResult, QueryFailedError, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { AuthRepository } from './auth.repository';
-
 @Injectable()
-export class AuthServices extends BaseService<Auth, AuthRepository> {
+export class AuthServices extends BaseService<Auth, Repository<Auth>> {
     constructor(
         @InjectRepository(Auth)
-        protected readonly repository: AuthRepository,
+        protected readonly repository: Repository<Auth>,
         protected readonly logger: LoggerService,
     ) {
         super(repository, logger);
