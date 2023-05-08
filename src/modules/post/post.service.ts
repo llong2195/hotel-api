@@ -6,7 +6,7 @@ import { iPaginationOption } from 'src/base/pagination.dto';
 import { ErrorCodes } from 'src/constants/error-code.const';
 import { DatabaseError } from 'src/exceptions/errors/database.error';
 import { LoggerService } from 'src/logger/custom.logger';
-import { InsertResult, QueryFailedError, Repository } from 'typeorm';
+import { Brackets, InsertResult, QueryFailedError, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -64,19 +64,27 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
             query.andWhere('title like :title', { title: `%${params.title}%` });
         }
         if (params.postType && params.postType == 1) {
-            if (params.minPrice) {
-                query.andWhere('min_price >= :minPrice', { minPrice: params.minPrice });
-            }
-            if (params.maxPrice) {
-                query.andWhere('max_price <= :maxPrice', { maxPrice: params.maxPrice });
-            }
+            query.andWhere(
+                new Brackets(qb => {
+                    if (params.minPrice) {
+                        qb.orWhere('min_price >= :minPrice', { minPrice: params.minPrice });
+                    }
+                    if (params.maxPrice) {
+                        qb.orWhere('max_price <= :maxPrice', { maxPrice: params.maxPrice });
+                    }
+                }),
+            );
         } else {
-            if (params.minPrice) {
-                query.andWhere('price >= :minPrice', { minPrice: params.minPrice });
-            }
-            if (params.maxPrice) {
-                query.andWhere('price <= :maxPrice', { maxPrice: params.maxPrice });
-            }
+            query.andWhere(
+                new Brackets(qb => {
+                    if (params.minPrice) {
+                        qb.orWhere('price >= :minPrice', { minPrice: params.minPrice });
+                    }
+                    if (params.maxPrice) {
+                        qb.orWhere('price <= :maxPrice', { maxPrice: params.maxPrice });
+                    }
+                }),
+            );
         }
         if (params.address) {
             query.andWhere('address like :address', {

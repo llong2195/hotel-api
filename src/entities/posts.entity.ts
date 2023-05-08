@@ -8,38 +8,34 @@ export class Posts extends DateAudit {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('int', { unique: true, name: 'authorId' })
+    @Column({ type: 'int', name: 'authorId' })
     authorId: number;
 
-    @Column('varchar', { unique: true, name: 'title', length: 500 })
+    @Column({ type: 'varchar', name: 'title', length: 500 })
     title: string;
 
-    @Column('varchar', { unique: true, name: 'detail' })
+    @Column({ type: 'varchar', name: 'detail' })
     detail: string;
 
-    @Column('varchar', { unique: true, name: 'postTime' })
+    @Column({ type: 'varchar', name: 'postTime', default: 'CURRENT_TIMESTAMP' })
     postTime: number;
 
-    @Column('int', { unique: true, name: 'price' })
+    @Column({ type: 'int', name: 'price', default: '0' })
     price: number;
-    @Column('int', { unique: true, name: 'min_price' })
-    minPrice: number;
-    @Column('int', { unique: true, name: 'max_price' })
-    maxPrice: number;
 
-    @Column('int', { unique: true, name: 'time_unit' })
+    @Column({ type: 'int', name: 'time_unit', default: '0' })
     timeUnit: number;
 
-    @Column('varchar', { unique: true, name: 'address' })
+    @Column({ type: 'varchar', name: 'address' })
     address: string;
 
-    @Column('int', { unique: true, name: 'postType' })
+    @Column({ type: 'int', name: 'postType', default: '0' })
     postType: number;
 
-    @Column('int', { unique: true, name: 'status' })
+    @Column({ type: 'int', name: 'status', default: '0' })
     status: number;
 
-    @Column('varchar', { unique: true, name: 'image' })
+    @Column({ type: 'varchar', name: 'image' })
     image: string;
 
     constructor(partial: Partial<Posts>) {
