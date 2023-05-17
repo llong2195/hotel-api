@@ -6,10 +6,10 @@ export class PostSave extends DateAudit {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('int', { unique: true, name: 'user_id' })
+    @Column({ type: 'int', name: 'user_id' })
     userId: number;
 
-    @Column('int', { unique: true, name: 'post_id' })
+    @Column({ type: 'int', name: 'post_id' })
     postId: number;
 
     constructor(partial: Partial<PostSave>) {
