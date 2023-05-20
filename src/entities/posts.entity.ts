@@ -17,11 +17,17 @@ export class Posts extends DateAudit {
     @Column({ type: 'varchar', name: 'detail' })
     detail: string;
 
-    @Column({ type: 'varchar', name: 'postTime', default: 'CURRENT_TIMESTAMP' })
-    postTime: number;
+    @Column({ type: 'timestamp', name: 'postTime', default: () => 'CURRENT_TIMESTAMP' })
+    postTime: Date;
 
     @Column({ type: 'int', name: 'price', default: '0' })
     price: number;
+
+    @Column({ type: 'int', name: 'min_price', default: '0' })
+    minPrice: number;
+
+    @Column({ type: 'int', name: 'max_price', default: '0' })
+    maxPrice: number;
 
     @Column({ type: 'int', name: 'time_unit', default: '0' })
     timeUnit: number;
