@@ -11,9 +11,17 @@ import { PostSaveService } from '../postSave/postSave.service';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthServices } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Auth, UserEntity, PostSave])],
+    imports: [
+        TypeOrmModule.forFeature([Auth, UserEntity, PostSave]),
+        JwtModule.register({
+            global: true,
+            secret: 'jwtConstants.secret',
+            signOptions: { expiresIn: '60h' },
+        }),
+    ],
     providers: [AuthServices, MessageComponent, UserService, ComponentService, PostSaveService],
     exports: [TypeOrmModule, AuthServices, AuthServices],
     controllers: [AuthController],

@@ -19,6 +19,7 @@ import { AuthServices } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
 import { UpdateDto } from './dto/update.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @ApiBearerAuth()
 @ApiTags('Auths')
@@ -31,6 +32,7 @@ export class AuthController extends BaseController {
         protected readonly dataSource: DataSource,
         private readonly componentService: ComponentService,
         private i18n: MessageComponent,
+        private jwtService: JwtService,
     ) {
         super(i18n);
     }
@@ -133,7 +135,7 @@ export class AuthController extends BaseController {
         if (!userData) {
             throw new InvalidValueError('USER_NOT_EXIST', 'USER_NOT_EXIST', ErrorCodes.USER_NOT_EXIST);
         }
-        return userData;
+        return { ...userData, access_token: this.jwtService.sign({ ...userData }) };
     }
 
     @Patch('/update')
