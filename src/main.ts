@@ -45,7 +45,7 @@ async function bootstrap() {
             .setVersion('1.0')
             // .addBearerAuth()
             .addServer(`http://localhost:${port}`)
-            .addServer(`https://motelapi.herokuapp.com`)
+            .addServer(`http://http://103.166.183.203:3000`)
             .build();
 
         const document = SwaggerModule.createDocument(app, config);
