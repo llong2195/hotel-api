@@ -269,7 +269,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
         const skip = (page - 1) * limit;
 
         const total = await queryBuilder.getCount();
-        const list = await queryBuilder.getRawMany();
+        const list = await queryBuilder.take(limit).skip(skip).getRawMany();
         const jobTable = customTable ?? this.repository.metadata.tableName;
 
         const listResult: T[] = list.map(item => {
