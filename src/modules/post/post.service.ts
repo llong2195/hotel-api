@@ -91,14 +91,13 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
                 address: `%${params.address}%`,
             });
         }
-        if (params.postType) {
+        if (params.postType != undefined && params.postType != 2) {
             query.andWhere('postType = :postType', { postType: params.postType });
         }
         if (params.status) {
             query.andWhere('status = :status', { status: params.status });
         }
         query.orderBy('id', 'DESC');
-        console.log('quey', await query.getQuery());
 
         // return await query.execute()
         return await this.iPaginateCustom<Posts>(
