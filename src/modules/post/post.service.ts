@@ -108,6 +108,9 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
         );
     }
 
+    async findById(id: number) {
+        return this.repository.findOneBy({ id });
+    }
     async createPost(postData: CreatePostDto): Promise<Posts> {
         let result: InsertResult;
         try {

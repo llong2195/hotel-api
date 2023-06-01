@@ -55,6 +55,25 @@ export class PostController extends BaseController {
         }
     }
 
+    @Get(':id')
+    async getById(@Query() token: TokenDto, @Param('id') id: number): Promise<any> {
+        console.log('params: ', token);
+        if (!token.code || !token) {
+            throw new InvalidValueError('INVALID_USER_CODE_AND_ID', 'USER_NOT_EXIST', ErrorCodes.INVALID_USER_CODE);
+        }
+        try {
+            const postData = await this.postService.findById(id);
+            const getPostData = postData as unknown as PaginatedDto<GetPostEXDto>;
+            for (const rs of getPostData.data) {
+                // Get more company address data
+                await this.component.setExtraData(rs, token);
+            }
+            return getPostData;
+        } catch (error) {
+            this.throwErrorProcess(error);
+        }
+    }
+
     @Get('/save-post/:id')
     async getSavePost(@Param('id') id: number, @Query() paging: iPaginationOption): Promise<any> {
         try {
