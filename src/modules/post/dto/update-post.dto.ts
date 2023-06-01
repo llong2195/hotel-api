@@ -90,4 +90,7 @@ export class UpdatePostDto extends BaseDto<Posts> {
     @IsOptional()
     // @IsNumber()
     image: string;
+
+    @IsOptional()
+    status: number;
 }

@@ -220,7 +220,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
         limit: number,
         queryString?: string,
     ): Promise<PaginationDto<T>> {
-        const skip = (page - 1) * limit;
+        const skip = ((page - 1) * limit) | 0;
         const [items, total] = await queryBuilder.take(limit).skip(skip).getManyAndCount();
 
         if (total <= 0) {
@@ -266,7 +266,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
         queryString?: string,
         customTable = null,
     ): Promise<PaginationDto<T>> {
-        const skip = (page - 1) * limit;
+        const skip = ((page - 1) * limit) | 0;
 
         const total = await queryBuilder.getCount();
         const list = await queryBuilder.take(limit).skip(skip).getRawMany();
