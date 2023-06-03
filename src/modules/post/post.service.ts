@@ -33,7 +33,6 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
             })
             // .innerJoinAndMapMany(PostSave, "post_save", "post.id= post_save.post_id", "post_save.user_id= :userId", { userId })
             .orderBy('post.id', 'DESC');
-        console.log('query', query.getQuery());
         return await this.iPaginateCustom<Posts>(
             query,
             paging.page as number,
@@ -67,10 +66,10 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
             query.andWhere(
                 new Brackets(qb => {
                     if (params.minPrice) {
-                        qb.orWhere('min_price >= :minPrice', { minPrice: params.minPrice });
+                        qb.andWhere('min_price >= :minPrice', { minPrice: params.minPrice });
                     }
                     if (params.maxPrice) {
-                        qb.orWhere('max_price <= :maxPrice', { maxPrice: params.maxPrice });
+                        qb.andWhere('max_price <= :maxPrice', { maxPrice: params.maxPrice });
                     }
                 }),
             );
@@ -78,10 +77,10 @@ export class PostService extends BaseService<Posts, Repository<Posts>> {
             query.andWhere(
                 new Brackets(qb => {
                     if (params.minPrice) {
-                        qb.orWhere('price >= :minPrice', { minPrice: params.minPrice });
+                        qb.andWhere('price >= :minPrice', { minPrice: params.minPrice });
                     }
                     if (params.maxPrice) {
-                        qb.orWhere('price <= :maxPrice', { maxPrice: params.maxPrice });
+                        qb.andWhere('price <= :maxPrice', { maxPrice: params.maxPrice });
                     }
                 }),
             );
