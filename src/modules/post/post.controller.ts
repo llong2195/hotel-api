@@ -1,3 +1,4 @@
+import { Posts } from '@src/entities/posts.entity';
 import { PaginatedDto } from 'src/api-response/api-response.dto';
 import { BaseController } from 'src/base/base.controller';
 import { iPaginationOption } from 'src/base/pagination.dto';
@@ -5,19 +6,19 @@ import ComponentService from 'src/components/component';
 import { MessageComponent } from 'src/components/message.component';
 import { ErrorCodes } from 'src/constants/error-code.const';
 import { TokenDto } from 'src/dtos/token.dto';
-import { Posts } from '@src/entities/posts.entity';
 import { InvalidValueError } from 'src/exceptions/errors/invalid-value.error';
 
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+import { DataSource, Like } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostDto, GetPostEXDto } from './dto/get-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostService } from './post.service';
-
+import * as db from './db';
 @ApiBearerAuth()
 @ApiTags('Post')
 @Controller('post')
@@ -28,6 +29,7 @@ export class PostController extends BaseController {
         private readonly configService: ConfigService,
         private readonly component: ComponentService,
         private i18n: MessageComponent,
+        private dataSource: DataSource,
     ) {
         super(i18n);
     }
@@ -42,6 +44,19 @@ export class PostController extends BaseController {
         if (!token.code || !token) {
             throw new InvalidValueError('INVALID_USER_CODE_AND_ID', 'USER_NOT_EXIST', ErrorCodes.INVALID_USER_CODE);
         }
+        // fake address ha noi
+        // const posts = await this.dataSource.manager.getRepository(Posts).find();
+        // await Promise.all([
+        //     posts.map(post => {
+        //         const city = db.vn.province[0];
+        //         const rawdistrict = db.vn.district.filter(i => i.idProvince == city.idProvince);
+        //         const district = rawdistrict[Math.floor(Math.random() * rawdistrict.length)];
+        //         const rawcommune = db.vn.commune.filter(i => i.idDistrict == district.idDistrict);
+        //         const commune = rawcommune[Math.floor(Math.random() * rawcommune.length)];
+        //         const address = `${commune.name},${district.name},${city.name}`;
+        //         return this.dataSource.manager.getRepository(Posts).update({ id: post.id }, { address: address });
+        //     }),
+        // ]);
         try {
             const postData = await this.postService.find(searchPost, paging);
             const getPostData = postData as unknown as PaginatedDto<GetPostEXDto>;

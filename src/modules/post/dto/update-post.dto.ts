@@ -62,14 +62,23 @@ export class UpdatePostDto extends BaseDto<Posts> {
     @IsOptional()
     maxPrice: number;
 
-    // @ApiProperty({
-    //     description: "Post's time_unit",
-    //     required: false
-    // })
-    // // @IsNumber()
-    // @Property()
-    // @IsOptional()
-    // time_unit: number
+    @ApiProperty({
+        description: "Post's time_unit",
+        required: false,
+    })
+    // @IsNumber()
+    @Property()
+    @IsOptional()
+    time_unit: number;
+
+    @ApiProperty({
+        description: "Post's type",
+        required: false,
+    })
+    // @IsNumber()
+    @Property()
+    @IsOptional()
+    postType: number;
 
     @ApiProperty({
         description: "Post's address",
